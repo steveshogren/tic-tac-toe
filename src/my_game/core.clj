@@ -13,10 +13,8 @@
 
 (defn mark-cell [m c r contents]
   (let [c (Integer/parseInt c)
-        r (Integer/parseInt r)
-        old-row (get m r)
-        new-row (assoc old-row c contents)]
-    (assoc m r new-row)))
+        r (Integer/parseInt r)]
+    (update-in m [c r] (fn [_] contents))))
 
 
 (defn start-game []
