@@ -2,7 +2,7 @@
   (:require [clojure.tools.cli :refer [parse-opts]])
   (:gen-class))
 
-(def empty-map [[" " " " " "] [" " " " " "] [" " " " " "]])
+(def empty-board [[" " " " " "] [" " " " " "] [" " " " " "]])
 
 (defn draw-board [m]
   (seq (map println m))
@@ -18,18 +18,21 @@
         new-row (assoc old-row c contents)]
     (assoc m r new-row)))
 
+
 (defn start-game []
   (println "Start Game!")
-  (loop [m empty-map
+  (loop [m empty-board
          player "X"]
+    ;; DISPLAY OUTPUT
     (draw-board m)
     (println "Player " player " move:")
-    (let [input (read-line)
-          [c r] (.split input " ")
-          ;; MUTATION BY ANY OTHER NAME...
+    ;; RECEIVE INPUT
+    (let [[c r] (.split (read-line) " ")
+          ;; MODIFY BOARD
           m (mark-cell m c r player)]
       (if (player-wins? m)
         (println "Player " player " Wins!")
+        ;; LOOP AGAIN WITH NEW BOARD AND DIFFERENT PLAYER
         (recur m (next-player player))))))
 
 (def cli-options
